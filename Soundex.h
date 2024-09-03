@@ -8,36 +8,16 @@ char getSoundexCode(char c)
 {
     static const char code[] = {'0','1','2','3','0','1','2','0','0','2','2','4','5','5','0','1','2','6','2','3','0','1','0','2','0','2'};
     c = toupper(c);
-    if (c >= 'A' && c <= 'Z') {
-        return code[c - 'A'];
-    }
-    return '0';
+    return (c >= 'A' && c <= 'Z') ? code[c - 'A'] : '0';
 }
 
-void end(char *soundex, int *sIndex)
+void initializeSoundex(char firstChar, char *soundex, int *sIndex)
 {
-    while (*sIndex < 4) 
-    {
-        soundex[(*sIndex)++] = '0';
-    }
-    soundex[4] = '\0';
+    soundex[0] = toupper(firstChar);
+    *sIndex = 1; 
 }
 
-void initialize(const char *name, char *soundex, int *sIndex)
-{
-    if (name[0] == '\0')
-    {
-        soundex[0] = '\0';
-        return;
-    }
-    else
-    {
-        soundex[0] = toupper(name[0]);
-        *sIndex = 1;
-    }
-}
-
-void process(const char *name, char *soundex, int len, int *sIndex)
+void processRemainingChars(const char *name, char *soundex, int len, int *sIndex)
 {
     for (int i = 1; i < len && *sIndex < 4; i++) 
     {
@@ -49,13 +29,29 @@ void process(const char *name, char *soundex, int len, int *sIndex)
     }
 }
 
+void paddingSoundex(char *soundex, int *sIndex)
+{
+    while (*sIndex < 4) 
+    {
+        soundex[(*sIndex)++] = '0';
+    }
+    soundex[4] = '\0';
+}
+
 void generateSoundex(const char *name, char *soundex) 
 {
-    int sIndex = 1;
+    if (name[0] == '\0')
+    {
+        soundex[0] = '\0';
+        return;
+    }
+    
+    int sIndex;
     int len = strlen(name);
-    initialize(name, soundex, &sIndex);
-    process(name, soundex, len, &sIndex);
-    end(soundex, &sIndex);
+
+    initializeSoundex(name[0], soundex, &sIndex);
+    processRemainingChars(name, soundex, len, &sIndex);
+    paddingSoundex(soundex, &sIndex);
 }
 
 #endif // SOUNDEX_H
