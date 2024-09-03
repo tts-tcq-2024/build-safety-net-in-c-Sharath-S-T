@@ -32,11 +32,13 @@ void initialize(const char *name, char *soundex)
     else
     {
         soundex[0] = toupper(name[0]);
+        soundex[4] = '\0';
     }
 }
 
 void process(const char *name, char *soundex, int len, int *sIndex)
 {
+    initialize(name, soundex);
     for (int i = 1; i < len && *sIndex < 4; i++) 
     {
         char code = getSoundexCode(name[i]);
@@ -45,17 +47,14 @@ void process(const char *name, char *soundex, int len, int *sIndex)
             soundex[(*sIndex)++] = code;
         }
     }
+    end(soundex, &sIndex);
 }
 
 void generateSoundex(const char *name, char *soundex) 
 {
     int sIndex = 1;
     int len = strlen(name);
-    initialize(name, soundex);
     process(name, soundex, len, &sIndex);
-    end(soundex, &sIndex);
-
-    soundex[4] = '\0';
 }
 
 #endif // SOUNDEX_H
