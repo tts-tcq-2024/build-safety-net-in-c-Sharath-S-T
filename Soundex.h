@@ -43,14 +43,19 @@ void padSoundex(char *soundex, int *sIndex)
     soundex[4] = '\0';
 }
 
-void generateSoundex(const char *name, char *soundex) 
+void checkIfNull(const char *name, char *soundex)
 {
     if (name[0] == '\0')
     {
         soundex[0] = '\0';
         return;
     }
-    
+}
+
+void generateSoundex(const char *name, char *soundex) 
+{
+    checkIfNull(name,soundex);
+       
     int sIndex;
     int len = strlen(name);
 
