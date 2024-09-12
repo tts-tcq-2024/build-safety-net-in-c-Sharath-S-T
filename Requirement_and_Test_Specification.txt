@@ -1,0 +1,83 @@
+Soundex Algorithm Overview:
+The Soundex algorithm improves search accuracy by encoding words into a letter followed by three digits. It is especially useful for handling misspellings. 
+
+The encoding rules are as follows:
+	- Retain the first letter.
+	- Ignore: a, e, i, o, u, y, h, w (except for the first letter).
+	- Replace consonants with digits:
+		b, f, p, v: 1
+		c, g, j, k, q, s, x, z: 2
+		d, t: 3
+		l: 4
+		m, n: 5
+		r: 6
+	- If two adjacent letters encode to the same number, treat them as a single number. 
+	  Also, this rule applies if two letters with the same number are separated by h or w, but not by a vowel.
+	  Stop when you have one letter followed by three digits. Zero-pad if needed.
+	  
+
+Unit Testing:
+	Public Interface : generateSoundex
+	Verification: Verify that the output matches the expected Soundex code for each test case.
+	
+Test Cases:
+
+1. Test Case Name: ReplacesConsonantsWithAppropriateDigits  
+   Scenario: Encodes consonants.  
+   Given input: "Sharath"  
+   Expected output: "S630"
+
+2. Test Case Name: HandlesRepeatingSameCharacters  
+   Scenario: Encodes strings with repeated characters.  
+   Given input: "aabbccdd"  
+   Expected output: "A123"
+
+3. Test Case Name: HandlesEmptyInputString  
+   Scenario: Handles empty input.  
+   Given input: "" (empty string)  
+   Expected output: "" (empty string)
+
+4. Test Case Name: IgnoresNonLetters  
+   Scenario: Alphanumeric input with non-alphabetic characters ignored.  
+   Given input: "HO1ME"  
+   Expected output: "H500"
+
+5. Test Case Name: HandlesNoConsonants  
+   Scenario: Input contains only vowels.  
+   Given input: "aeiou"  
+   Expected output: "A000"
+
+6. Test Case Name: HandlesAdjacentConsonantsWithSameDigit  
+   Scenario: Handles adjacent consonants that encode to the same digit.  
+   Given input: "bbb"  
+   Expected output: "B100"
+
+7. Test Case Name: HandlesConsonantsSeparatedByHAndW  
+   Scenario: Consonants separated by 'h' or 'w' are handled correctly.  
+   Given input: "Ashcroft"  
+   Expected output: "A261"
+
+8. Test Case Name: CaseInsensitiveInput  
+   Scenario: Handles mixed-case input.  
+   Given input: "RoBerT"  
+   Expected output: "R163"
+
+9. Test Case Name: PadsShortResult  
+   Scenario: Single-letter input is padded with zeros.  
+   Given input: "R"  
+   Expected output: "R000"
+
+10. Test Case Name: TruncatesLongerNames  
+    Scenario: Handles longer names by truncating them.  
+    Given input: "Jackson"  
+    Expected output: "J250"
+
+11. Test Case Name: IgnoresNonAlphabeticCharacters  
+    Scenario: Non-alphabetic characters are ignored during encoding.  
+    Given input: "H3ll0"  
+    Expected output: "H400"
+
+12. Test Case Name: EncodesConsonantsSeparatedByVowels  
+    Scenario: Consonants separated by vowels are encoded correctly.  
+    Given input: "Cage"  
+    Expected output: "C200"
